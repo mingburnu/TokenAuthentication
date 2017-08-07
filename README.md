@@ -72,7 +72,7 @@
         def __unicode__(self):
             return self.choice_text
 
-<a href="https://github.com/mingburnu/TokenAuthentication/blob/master/polls/serializer.py">edit TokenAuthentication/polls/serializer.py</a>
+<a href="https://github.com/mingburnu/TokenAuthentication/blob/master/polls/serializers.py">edit TokenAuthentication/polls/serializer.py</a>
 
 <a href="https://github.com/mingburnu/TokenAuthentication/blob/master/polls/admin.py">edit /TokenAuthentication/polls/admin.py</a>
    
