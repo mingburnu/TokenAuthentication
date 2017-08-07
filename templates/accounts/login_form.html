@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log in</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/base.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}">
+    <script src="{% static "jquery-2.2.4.min.js" %}"></script>
+    <meta name="robots" content="NONE,NOARCHIVE">
+</head>
+<body>
+<div style="position: absolute; left: 50%;top: 10%;">
+    <div style="position: relative; left: -50%;">
+        {% if request.COOKIES.token and request.user.is_authenticated %}
+            <h1>YOUR TOKEN</h1>
+            <h1>{{ request.COOKIES.token }}</h1>
+            <input type="submit" value="Logout" id="logout"><br>
+            <a href="{% url 'polls:index' %}"><input type="submit" value="Question list"></a>
+            <input type="submit" value="Questions json" id="qs">
+            <br>
+            <img src="{% static "json.png" %}" width="125%">
+        {% else %}
+            <form action="{% url 'accounts:login' %}" method="post" onsubmit="false">
+                <h1>LOGIN</h1>
+                <span>Username:</span>
+                {% csrf_token %}
+                <input type='text' name='username' id='username' title="Username">
+                <br>
+                <br>
+                <span>Password:</span>
+                <input type='password' name='password' id='password' title="Password">
+                <br>
+                <br>
+                <input type="submit" value="Login" id="login_form">
+            </form>
+        {% endif %}
+    </div>
+</div>
+</body>
+<script>
+    $("#login_form").on("click", function (e) {
+        var username = $("#username").val();
+        var password = $("#password").val();
+
+        $.post("{% url 'accounts:get_auth_token' %}", {
+            "username": username,
+            "password": password
+        }).success(function (data) {
+            var token = data["token"];
+            document.cookie = 'token=' + token + ";path=/";
+            $("form").submit();
+        });
+    });
+
+    $("#logout").on("click", function (e) {
+        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/";
+        location.href = "{% url 'accounts:logout' %}";
+    });
+
+    $("#qs").on("click", function (e) {
+        var cookies = document.cookie.split(/;\s*/);
+        var token = "";
+        var headers = null;
+
+        for (var i = 0; i < cookies.length; i++) {
+            var c = cookies[i];
+            if (c.startsWith("token")) {
+                token = c.split("=")[1];
+                headers = {'Authorization': 'Token ' + token};
+            }
+        }
+
+        $.ajax({
+            url: "{% url 'polls:api_questions' %}",
+            headers: headers,
+
+            success: function (result) {
+                alert("SUCCESS! Please observe tool Network")
+            },
+
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });
+    });
+
+</script>
+</html>
