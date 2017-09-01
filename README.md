@@ -104,5 +104,5 @@
 [127.0.0.1:8000](http://127.0.0.1:8000)
 
 ### REFERECE
-[How to Implement Token Authentication with Django REST Framework](https://chrisbartos.com/articles/how-to-implement-token-authentication-with-django-rest-framework/)
+[How to Implement Token Authentication with Django REST Framework](https://chrisbartos.com/articles/how-to-implement-token-authentication-with-django-rest-framework/)<br>
 [用戶的登入與登出](http://dokelung-blog.logdown.com/posts/222552-django-notes-9-cookies-and-sessions)
